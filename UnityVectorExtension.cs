@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UnityVectorExtension
+namespace UnityExtensions
 {
     public static class UnityVectorExtension
     {
