@@ -1,0 +1,16 @@
+{
+    "name": "UnityExtensions",
+    "rootNamespace": "",
+    "references": [
+        "GUID:2cbbaf9b209f03e4fb3863cd1028ea02"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
