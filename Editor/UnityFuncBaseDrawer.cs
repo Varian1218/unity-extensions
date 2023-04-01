@@ -366,16 +366,16 @@ namespace UnityExtensions
             return types == null ? throw new ArgumentNullException() : string.Join(", ", types.Select(ToString).ToArray());
         }
         
-        private static void SetMethod(SerializedProperty property, UnityEngine.Object target, MethodInfo methodInfo, bool dynamic) {
-            var targetProp = property.FindPropertyRelative("_target");
+        private static void SetMethod(SerializedProperty property, Object target, MethodInfo methodInfo, bool dynamic) {
+            var targetProp = property.FindPropertyRelative("target");
             targetProp.objectReferenceValue = target;
-            var methodProp = property.FindPropertyRelative("_methodName");
+            var methodProp = property.FindPropertyRelative("methodName");
             methodProp.stringValue = methodInfo.Name;
-            var dynamicProp = property.FindPropertyRelative("_dynamic");
+            var dynamicProp = property.FindPropertyRelative("dynamic");
             dynamicProp.boolValue = dynamic;
-            var argProp = property.FindPropertyRelative("_args");
-            var parameters = methodInfo.GetParameters();
-            argProp.arraySize = parameters.Length;
+            // var argProp = property.FindPropertyRelative("args");
+            // var parameters = methodInfo.GetParameters();
+            // argProp.arraySize = parameters.Length;
             // for (var i = 0; i < parameters.Length; i++) {
             //     argProp.FindPropertyRelative("Array.data[" + i + "].argType").enumValueIndex = (int) Arg.FromRealType(parameters[i].ParameterType);
             //     argProp.FindPropertyRelative("Array.data[" + i + "]._typeName").stringValue = parameters[i].ParameterType.AssemblyQualifiedName;

@@ -35,7 +35,7 @@ namespace UnityExtensions
             typeName = GetType().AssemblyQualifiedName;
         }
 #endif
-        internal T Create<T>()
+        internal Func<T> Create<T>()
         {
             var method = target.GetType().GetMethod(
                 methodName,
@@ -45,7 +45,7 @@ namespace UnityExtensions
                 Array.Empty<Type>(), //types,
                 null
             ) ?? throw new NullReferenceException();
-            return Delegate.CreateDelegate(typeof(Func<T>), target, method) is T t ? t : throw new Exception();
+            return Delegate.CreateDelegate(typeof(Func<T>), target, method) is Func<T> t ? t : throw new Exception();
         }
     }
 }

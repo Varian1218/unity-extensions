@@ -8,7 +8,7 @@ namespace UnityExtensions
         private Func<T> _delegate;
         public T Invoke()
         {
-            _delegate ??= Create<Func<T>>();
+            _delegate ??= Create<T>();
             return _delegate();
         }
     }
