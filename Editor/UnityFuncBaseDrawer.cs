@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if USE_UNITY_FUNC_BASE_DRAWER
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -407,3 +408,4 @@ namespace UnityExtensions
         }
     }
 }
+#endif
