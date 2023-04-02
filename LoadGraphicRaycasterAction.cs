@@ -1,15 +1,14 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace UnityExtensions
 {
-    public class UnityGraphicRaycaster : MonoBehaviour
+    public class LoadGraphicRaycasterAction : MonoBehaviour
     {
         [SerializeField] private GraphicRaycaster raycaster;
         [SerializeField] private ScriptableObjectGraphicRaycaster sRaycaster;
 
-        private void Awake()
+        public void Invoke()
         {
             sRaycaster.Impl = raycaster;
         }
