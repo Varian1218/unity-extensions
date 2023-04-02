@@ -7,7 +7,7 @@ namespace UnityExtensions
     {
         public static void SetLocalScale(this Transform transform, Double3 value)
         {
-            transform.localScale = new Vector3((float)value.X, (float)value.Y, (float)value.Z);
+            transform.localScale = value.ToVector3();
         }
 
         public static void SetLocalScale(this Transform transform, Vector3 value)

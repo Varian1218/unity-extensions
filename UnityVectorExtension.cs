@@ -1,9 +1,15 @@
-﻿using UnityEngine;
+﻿using Doubles;
+using UnityEngine;
 
 namespace UnityExtensions
 {
     public static class UnityVectorExtension
     {
+        public static Vector3 ToVector3(this Double3 value)
+        {
+            return new Vector3((float)value.X, (float)value.Y, (float)value.Z);
+        }
+
         public static Vector2 ToVector2(this System.Numerics.Vector2 value)
         {
             return new Vector2(value.X, value.Y);
