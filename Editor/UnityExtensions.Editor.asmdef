@@ -1,3 +1,16 @@
 {
-	"name": "UnityExtensions.Editor"
+    "name": "UnityExtensions.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6f2c43062e898414d8bcbdb93b73c5e0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
