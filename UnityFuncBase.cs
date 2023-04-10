@@ -17,13 +17,13 @@ namespace UnityExtensions
 #pragma warning disable 0414
         [SerializeField] private string typeName;
 #pragma warning restore 0414
-         [SerializeField] private bool dirty;
+        [SerializeField] private bool dirty;
 #if UNITY_EDITOR
         protected UnityFuncBase()
         {
             typeName = GetType().AssemblyQualifiedName;
         }
-
+#endif
         public void OnBeforeSerialize()
         {
             if (!dirty) return;
@@ -34,7 +34,7 @@ namespace UnityExtensions
         {
             typeName = GetType().AssemblyQualifiedName;
         }
-#endif
+
         internal Func<T> Create<T>()
         {
             var method = target.GetType().GetMethod(
