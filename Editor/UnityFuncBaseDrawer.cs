@@ -1,4 +1,5 @@
-﻿#if USE_UNITY_FUNC_BASE_DRAWER
+﻿#if UNITY_EDITOR
+#if USE_UNITY_FUNC_BASE_DRAWER
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace UnityExtensions
+namespace UnityExtensions.Editor
 {
     [CustomPropertyDrawer(typeof(UnityFuncBase), true)]
     public class UnityFuncBaseDrawer : PropertyDrawer
@@ -408,4 +409,5 @@ namespace UnityExtensions
         }
     }
 }
+#endif
 #endif
