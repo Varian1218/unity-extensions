@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace UnityExtensions.Editor
+namespace UnityExtensions.Editors
 {
     [CustomPropertyDrawer(typeof(UnityFuncBase), true)]
     public class UnityFuncBaseDrawer : PropertyDrawer
