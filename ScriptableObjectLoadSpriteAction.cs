@@ -34,7 +34,7 @@ namespace UnityExtensions
             IEnumerable<(ScriptableObjectSpriteArray Array, ScriptableObjectSpriteDictionary Dictionary)>.
             GetEnumerator()
         {
-            return pairs.Select(it => (it.array, it.dictionary)).GetEnumerator();
+            return (pairs ?? Array.Empty<Pair>()).Select(it => (it.array, it.dictionary)).GetEnumerator();
         }
 
         public IEnumerator GetEnumerator()
