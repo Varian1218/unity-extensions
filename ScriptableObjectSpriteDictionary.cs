@@ -7,12 +7,7 @@ namespace UnityExtensions
     [CreateAssetMenu(fileName = "Sprite Dictionary", menuName = "Unity Extensions/Sprite Dictionary", order = 1)]
     public class ScriptableObjectSpriteDictionary : ScriptableObject, IDictionary<string, Sprite>
     {
-        private IDictionary<string, Sprite> _impl;
-
-        private IDictionary<string, Sprite> Impl
-        {
-            set => _impl = value;
-        }
+        private readonly IDictionary<string, Sprite> _impl = new Dictionary<string, Sprite>();
 
         public IEnumerator<KeyValuePair<string, Sprite>> GetEnumerator()
         {
