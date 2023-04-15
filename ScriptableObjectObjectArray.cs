@@ -7,12 +7,8 @@ using Object = UnityEngine.Object;
 
 namespace UnityExtensions
 {
-    [CreateAssetMenu(
-        fileName = "Mono Behaviour Database",
-        menuName = "Unity Extensions/Mono Behaviour Database",
-        order = 1
-    )]
-    public class ScriptableObjectArray : ScriptableObject, IEnumerable<Object>
+    [CreateAssetMenu(fileName = "Object Array", menuName = "Unity Extensions/Object Array", order = 1)]
+    public class ScriptableObjectObjectArray : ScriptableObject, IEnumerable<Object>
     {
         [SerializeField] private UnityType type;
         [SerializeField] private Object[] values;

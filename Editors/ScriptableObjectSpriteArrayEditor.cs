@@ -22,7 +22,7 @@ namespace UnityExtensions.Editors
         {
             if (_loadSpriteActions == null || _loadSpriteActions.Length == 0)
             {
-                EditorGUILayout.HelpBox("You must be create widget list", MessageType.Warning);
+                EditorGUILayout.HelpBox("You must be create load sprite action", MessageType.Warning);
             }
             else
             {
