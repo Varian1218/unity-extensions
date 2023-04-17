@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace UnityExtensions.Editors
 {
@@ -10,8 +12,11 @@ namespace UnityExtensions.Editors
     public class ScriptableObjectObjectArrayEditor : Editor
     {
         private ScriptableObjectObjectDatabase[] _database;
+        private bool _databaseFoldout;
+        private HashSet<Object> _hashSet;
         private int _length;
-        private bool _show;
+        private Object[] _objects;
+        private bool _objectFoldout;
         private ScriptableObjectObjectArray _target;
         private SerializedProperty _valuesProperties;
         private ReorderableList _values;
@@ -23,6 +28,10 @@ namespace UnityExtensions.Editors
                     AssetDatabase.LoadAssetAtPath<ScriptableObjectObjectDatabase>(AssetDatabase.GUIDToAssetPath(it)))
                 .ToArray();
             _target = target as ScriptableObjectObjectArray ?? throw new NullReferenceException(nameof(target));
+            _hashSet = _target.ToHashSet();
+            _objects = AssetDatabase.FindAssets("t:Prefab")
+                .Select(it => AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(it)))
+                .Where(it => it.GetComponent(_target.Type)).ToArray();
             _valuesProperties = serializedObject.FindProperty("values");
             _values = new ReorderableList(serializedObject, _valuesProperties, true, true, true, true)
             {
@@ -40,26 +49,24 @@ namespace UnityExtensions.Editors
             }
             else
             {
-                _show = EditorGUILayout.BeginFoldoutHeaderGroup(_show, "Object Database");
-                if (_show)
+                _databaseFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(_databaseFoldout, "Database");
+                if (_databaseFoldout)
                 {
-                    var array = target as ScriptableObjectObjectArray ?? throw new NullReferenceException();
-                    var arrayName = array.name;
                     foreach (var database in _database)
                     {
                         var map = database.ToDictionary(it => it.name);
-                        var contain = map.ContainsKey(arrayName);
+                        var contain = map.ContainsKey(_target.name);
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField(database.name);
                         var toggle = EditorGUILayout.Toggle(database.name, contain);
                         EditorGUILayout.EndHorizontal();
                         if (toggle)
                         {
-                            map[arrayName] = array;
+                            map[_target.name] = _target;
                         }
                         else
                         {
-                            map.Remove(arrayName);
+                            map.Remove(_target.name);
                         }
 
                         if (toggle == contain) continue;
@@ -84,6 +91,36 @@ namespace UnityExtensions.Editors
                 _values.DoLayoutList();
             }
 
+            EditorGUILayout.EndFoldoutHeaderGroup();
+            _objectFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(_objectFoldout, "Objects");
+            foreach (var it in _objects)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.ObjectField(it, _target.Type, false);
+                var contain = _hashSet.Contains(it);
+                if (EditorGUILayout.Toggle(contain))
+                {
+                    if (!contain)
+                    {
+                        _hashSet.Add(it);
+                        _target.Set(_hashSet);
+                        EditorUtility.SetDirty(_target);
+                    }
+                }
+                else
+                {
+                    if (contain)
+                    {
+                        _hashSet.Remove(it);
+                        _target.Set(_hashSet);
+                        EditorUtility.SetDirty(_target);
+                    }
+                }
+
+                EditorGUILayout.EndHorizontal();
+            }
+
+            EditorGUILayout.EndFoldoutHeaderGroup();
             AssetDatabase.SaveAssetIfDirty(_target);
         }
 

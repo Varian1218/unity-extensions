@@ -1,11 +1,16 @@
 {
+  "author": {
+    "email": "tuduchoang@gmail.com",
+    "name": "Little Lion",
+    "url": "https://github.com/littlelion-libraries"
+  },
   "dependencies": {
-    "com.little-lion.numerics": "https://github.com/Varian1218/numerics.git"
+    "com.little-lion.numerics": "https://github.com/littlelion-libraries/numerics.git"
   },
   "description": "",
   "displayName": "Unity Extensions",
   "keywords": [],
   "name": "com.little-lion.unity-extensions",
   "unity": "2021.3",
-  "version": "2.6.1"
+  "version": "2.7.0"
 }

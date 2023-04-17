@@ -17,12 +17,17 @@ namespace UnityExtensions
 
         public IEnumerator<Object> GetEnumerator()
         {
-            return values.Select(it => it).GetEnumerator();
+            return (values ?? Array.Empty<Object>()).Select(it => it).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return values.GetEnumerator();
+        }
+
+        public void Set(IEnumerable<Object> value)
+        {
+            values = value.ToArray();
         }
     }
 }
