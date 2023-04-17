@@ -57,8 +57,8 @@ namespace UnityExtensions.Editors
                         var map = database.ToDictionary(it => it.name);
                         var contain = map.ContainsKey(_target.name);
                         EditorGUILayout.BeginHorizontal();
-                        EditorGUILayout.LabelField(database.name);
-                        var toggle = EditorGUILayout.Toggle(database.name, contain);
+                        EditorGUILayout.ObjectField(database, typeof(ScriptableObjectObjectDatabase), false);
+                        var toggle = EditorGUILayout.Toggle(contain);
                         EditorGUILayout.EndHorizontal();
                         if (toggle)
                         {
