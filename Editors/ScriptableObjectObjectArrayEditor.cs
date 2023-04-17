@@ -30,8 +30,8 @@ namespace UnityExtensions.Editors
             _target = target as ScriptableObjectObjectArray ?? throw new NullReferenceException(nameof(target));
             _hashSet = _target.ToHashSet();
             _objects = AssetDatabase.FindAssets("t:Prefab")
-                .Select(it => AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(it)))
-                .Where(it => it.GetComponent(_target.Type)).ToArray();
+                .Select(it => AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(it), _target.Type))
+                .Where(it => it).ToArray();
             _valuesProperties = serializedObject.FindProperty("values");
             _values = new ReorderableList(serializedObject, _valuesProperties, true, true, true, true)
             {
@@ -93,33 +93,36 @@ namespace UnityExtensions.Editors
 
             EditorGUILayout.EndFoldoutHeaderGroup();
             _objectFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(_objectFoldout, "Objects");
-            foreach (var it in _objects)
+            if (_objectFoldout)
             {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.ObjectField(it, _target.Type, false);
-                var contain = _hashSet.Contains(it);
-                if (EditorGUILayout.Toggle(contain))
+                _hashSet = _target.ToHashSet();
+                foreach (var it in _objects)
                 {
-                    if (!contain)
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.ObjectField(it, _target.Type, false);
+                    var contain = _hashSet.Contains(it);
+                    if (EditorGUILayout.Toggle(contain))
                     {
-                        _hashSet.Add(it);
-                        _target.Set(_hashSet);
-                        EditorUtility.SetDirty(_target);
+                        if (!contain)
+                        {
+                            _hashSet.Add(it);
+                            _target.Set(_hashSet);
+                            EditorUtility.SetDirty(_target);
+                        }
                     }
-                }
-                else
-                {
-                    if (contain)
+                    else
                     {
-                        _hashSet.Remove(it);
-                        _target.Set(_hashSet);
-                        EditorUtility.SetDirty(_target);
+                        if (contain)
+                        {
+                            _hashSet.Remove(it);
+                            _target.Set(_hashSet);
+                            EditorUtility.SetDirty(_target);
+                        }
                     }
-                }
 
-                EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.EndHorizontal();
+                }                
             }
-
             EditorGUILayout.EndFoldoutHeaderGroup();
             AssetDatabase.SaveAssetIfDirty(_target);
         }
