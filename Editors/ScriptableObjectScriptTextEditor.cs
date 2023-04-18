@@ -63,9 +63,9 @@ namespace UnityExtensions.Editors
 
         private static object DrawType(string label, Type type, object value)
         {
-            if (type == typeof(bool)) return EditorGUILayout.Toggle((bool)value, label);
-            if (type == typeof(float)) return EditorGUILayout.FloatField((float)value, label);
-            if (type == typeof(int)) return EditorGUILayout.IntField((int)value, label);
+            if (type == typeof(bool)) return EditorGUILayout.Toggle(label, (bool)value);
+            if (type == typeof(float)) return EditorGUILayout.FloatField(label, (float)value);
+            if (type == typeof(int)) return EditorGUILayout.IntField(label, (int)value);
             if (type == typeof(string)) return EditorGUILayout.TextField(label, value as string);
             EditorGUILayout.Foldout(true, label);
             EditorGUI.indentLevel++;
@@ -73,7 +73,7 @@ namespace UnityExtensions.Editors
             {
                 value ??= Activator.CreateInstance(type, 0);
                 var array = value as Array ?? throw new NullReferenceException(label);
-                EditorGUILayout.IntField(array.Length);
+                EditorGUILayout.IntField("Size", array.Length);
                 for (var i = 0; i < array.Length; i++)
                 {
                     array.SetValue(DrawType($"{i}", type.GetElementType(), array.GetValue(i)), i);
