@@ -2,7 +2,8 @@
     "name": "UnityExtensions.Editors",
     "rootNamespace": "",
     "references": [
-        "GUID:6f2c43062e898414d8bcbdb93b73c5e0"
+        "GUID:6f2c43062e898414d8bcbdb93b73c5e0",
+        "GUID:56b30b9a3b53a7d40b51b04e9e367179"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

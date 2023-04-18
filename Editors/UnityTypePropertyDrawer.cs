@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using CSharpExtensions;
+using UnityEditor;
 using UnityEngine;
 
 namespace UnityExtensions.Editors
@@ -29,9 +30,19 @@ namespace UnityExtensions.Editors
             }
             else
             {
-                targetProp.stringValue = AssetDatabase.GUIDFromAssetPath(AssetDatabase.GetAssetPath(script)).ToString();
-                typeProp.stringValue = script.GetClass().AssemblyQualifiedName;
+                var guid = AssetDatabase.GUIDFromAssetPath(AssetDatabase.GetAssetPath(script)).ToString();
+                if (guid != targetProp.stringValue)
+                {
+                    targetProp.stringValue = guid;
+                }
+
+                var type = (script.GetClass() ?? CSharpScript.GetType(script.text)).AssemblyQualifiedName;
+                if (type != typeProp.stringValue)
+                {
+                    typeProp.stringValue = type;
+                }
             }
+
             EditorGUI.EndProperty();
             property.serializedObject.ApplyModifiedProperties();
         }
