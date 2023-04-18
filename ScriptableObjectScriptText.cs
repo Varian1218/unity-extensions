@@ -9,6 +9,8 @@ namespace UnityExtensions
         [Serializable]
         public struct Data
         {
+            public bool array;
+            public bool indented;
             public TextAsset textAsset;
             public UnityType type;
         }

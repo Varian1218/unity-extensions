@@ -12,25 +12,6 @@ namespace UnityExtensions.Editors
     [CustomEditor(typeof(ScriptableObjectScriptText))]
     public class ScriptableObjectScriptTextEditor : Editor
     {
-        public class Test
-        {
-            public string version;
-        }
-
-        public struct Test2
-        {
-            public Test test;
-            public Test test1;
-            public Test[] test3;
-        }
-
-        private struct Data
-        {
-            public bool Foldout;
-            public ScriptableObjectScriptText.Data ScriptTextData;
-        }
-
-        // private Data[] _data;
         private SerializedProperty _dataProperty;
         private ReorderableList _reorderableList;
         private ScriptableObjectScriptText _target;
@@ -62,14 +43,22 @@ namespace UnityExtensions.Editors
             if (!property.isExpanded) return;
             var data = _target.data[index];
             if (data.textAsset == null || data.type?.Type == null) return;
-            var value = JsonConvert.DeserializeObject(data.textAsset.text, data.type.Type);
-            var text = JsonConvert.SerializeObject(
-                DrawType(data.textAsset.name, data.type.Type, value),
-                Formatting.Indented
-            );
-            if (text == data.textAsset.text) return;
-            File.WriteAllText(AssetDatabase.GetAssetPath(data.textAsset), text);
-            AssetDatabase.Refresh();
+            try
+            {
+                var type = data.array ? data.type.Type.MakeArrayType() : data.type.Type;
+                var value = JsonConvert.DeserializeObject(data.textAsset.text, type);
+                var text = JsonConvert.SerializeObject(
+                    DrawType(data.textAsset.name, type, value),
+                    data.indented ? Formatting.Indented : Formatting.None
+                );
+                if (text == data.textAsset.text) return;
+                File.WriteAllText(AssetDatabase.GetAssetPath(data.textAsset), text);
+                AssetDatabase.Refresh();
+            }
+            catch (Exception e)
+            {
+                EditorGUILayout.HelpBox(e.Message, MessageType.Error);
+            }
         }
 
         private static object DrawType(string label, Type type, object value)
