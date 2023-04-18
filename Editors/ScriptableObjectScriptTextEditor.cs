@@ -115,22 +115,22 @@ namespace UnityExtensions.Editors
                     value ??= Activator.CreateInstance(type);
                     var dictionary = value as IDictionary ?? throw new NullReferenceException();
                     var keys = new List<object>((IEnumerable<object>)dictionary.Keys);
-                    foreach (var key in keys)
+                    foreach (var it in keys)
                     {
                         EditorGUILayout.BeginHorizontal();
-                        dictionary[key] = DrawType(key as string, valueType, dictionary[key]);
+                        dictionary[it] = DrawType(it as string, valueType, dictionary[it]);
                         if (GUILayout.Button("Remove"))
                         {
-                            dictionary.Remove(key);
+                            dictionary.Remove(it);
                         }
                         EditorGUILayout.EndHorizontal();
                     }
-
-                    if (GUILayout.Button("Add"))
-                    {
-                        dictionary.Add(string.Empty, Activator.CreateInstance(valueType));
-                    }
-
+                    EditorGUILayout.BeginHorizontal();
+                    // if (GUILayout.Button("Add"))
+                    // {
+                    //     dictionary.Add(string.Empty, default);
+                    // }
+                    EditorGUILayout.EndHorizontal();
                     EditorGUI.indentLevel--;
                     return dictionary;
                 }

@@ -4,12 +4,13 @@
     "url": "https://github.com/little-lion-libraries"
   },
   "dependencies": {
-    "com.little-lion.numerics": "https://github.com/Varian1218/numerics.git"
+    "com.little-lion.numerics": "https://github.com/littlelion-libraries/numerics.git",
+    "com.little-lion.c-sharp-extensions": "https://github.com/littlelion-libraries/c-sharp-extensions.git"
   },
   "description": "",
   "displayName": "Unity Extensions",
   "keywords": [],
   "name": "com.little-lion.unity-extensions",
   "unity": "2021.3",
-  "version": "2.8.0"
+  "version": "2.8.1"
 }
