@@ -1,8 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CSharpExtensions;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEditorInternal;
@@ -14,14 +14,15 @@ namespace UnityExtensions.Editors
     public class ScriptableObjectScriptTextEditor : Editor
     {
         private SerializedProperty _dataProperty;
-        private DrawObject[] _objects;
+        private Dictionary<int, DrawObject> _objects;
         private ReorderableList _reorderableList;
         private ScriptableObjectScriptText _target;
 
         private void OnEnable()
         {
             _target = target as ScriptableObjectScriptText ?? throw new NullReferenceException(nameof(target));
-            _objects = _target.data?.Select(CreateObject).ToArray();
+            _objects = _target.data?.Select(CreateObject).Select((it, i) => new KeyValuePair<int, DrawObject>(i, it))
+                .ToDictionary();
             _dataProperty = serializedObject.FindProperty("data");
             _reorderableList = new ReorderableList(serializedObject, _dataProperty);
             _reorderableList.drawElementCallback = DrawElement;
@@ -55,38 +56,60 @@ namespace UnityExtensions.Editors
 
         private void DrawElement(Rect rect, int index, bool isActive, bool isFocused)
         {
-            var data = _target.data[index];
-            var property = _dataProperty.GetArrayElementAtIndex(index);
-            var type = data.array ? data.unityType.Type.MakeArrayType() : data.unityType.Type;
-            EditorGUILayout.BeginHorizontal();
-            var textAsset = EditorGUILayout.ObjectField(data.textAsset, typeof(TextAsset), false) as TextAsset;
-            if (data.textAsset != textAsset)
-            {
-                _target.data[index].textAsset = textAsset;
-                _objects[index] = CreateObject(_target.data[index]);
-            }
-
-            var unityTypeGuid = data.unityType.Guid;
-            if (UnityEditorGUILayout.TypeField(data.unityType).Guid != unityTypeGuid)
+            // var dataProps = serializedObject.FindProperty("data");
+            var dataProp = _dataProperty.GetArrayElementAtIndex(index);
+            EditorGUILayout.PropertyField(dataProp);
+            if (GUI.changed)
             {
                 _objects[index] = CreateObject(_target.data[index]);
             }
 
-            EditorGUILayout.EndHorizontal();
-            if (_objects[index] == null) return;
+            // if (index >= _target.data.Length)
+            // {
+            //     var array = new ScriptableObjectScriptText.Data[index + 1];
+            //     Array.Copy(_target.data, array, _target.data.Length);
+            //     _target.data = array;
+            // }
+            // var data = _target.data[index];
+            // EditorGUILayout.BeginHorizontal();
+            // var textAsset = EditorGUILayout.ObjectField(data.textAsset, typeof(TextAsset), false) as TextAsset;
+            // if (data.textAsset != textAsset)
+            // {
+            //     _target.data[index].textAsset = textAsset;
+            //     _objects[index] = CreateObject(_target.data[index]);
+            // }
+            //
+            // var unityTypeGuid = data.unityType?.Guid;
+            // if (UnityEditorGUILayout.TypeField(data.unityType).Guid != unityTypeGuid)
+            // {
+            //     _objects[index] = CreateObject(_target.data[index]);
+            // }
+            //
+            // EditorGUILayout.EndHorizontal();
             try
             {
-                _objects[index] = TypeDrawer.DrawType(_objects[index]);
-                var text = JsonConvert.SerializeObject(
-                    _objects[index].Impl,
-                    data.indented ? Formatting.Indented : Formatting.None
-                );
-                if (text == data.textAsset.text) return;
-                File.WriteAllText(AssetDatabase.GetAssetPath(data.textAsset), text);
+
+                if (_objects[index] == null) return;
+                var indented = dataProp.FindPropertyRelative("indented").boolValue;
+                var textAsset = dataProp.FindPropertyRelative("textAsset").objectReferenceValue as TextAsset ??
+                                throw new NullReferenceException();
+                try
+                {
+                    _objects[index] = TypeDrawer.DrawType(_objects[index]);
+                    var text = JsonConvert.SerializeObject(
+                        _objects[index].Impl,
+                        indented ? Formatting.Indented : Formatting.None
+                    );
+                    if (text == textAsset.text) return;
+                    File.WriteAllText(AssetDatabase.GetAssetPath(textAsset), text);
+                }
+                catch (Exception e)
+                {
+                    EditorGUILayout.HelpBox(e.Message, MessageType.Error);
+                }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                EditorGUILayout.HelpBox(e.Message, MessageType.Error);
             }
         }
 
