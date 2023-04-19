@@ -5,27 +5,15 @@ using Object = UnityEngine.Object;
 namespace UnityExtensions
 {
     [Serializable]
-    public class ObjectReference<T> : ISerializationCallbackReceiver where T : class
+    public class ObjectReference<T> where T : class
     {
-        [SerializeField] private bool dirty;
         [SerializeField] private Object target;
-        [SerializeField] private string typeName;
+
         public T Value => target as T;
 
         public static implicit operator T(ObjectReference<T> objectReference)
         {
             return objectReference.Value;
-        }
-
-        public void OnAfterDeserialize()
-        {
-            typeName = GetType().AssemblyQualifiedName;
-        }
-
-        public void OnBeforeSerialize()
-        {
-            if (!dirty) return;
-            dirty = false;
         }
     }
 }
