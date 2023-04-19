@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace UnityExtensions
 {
@@ -12,7 +13,7 @@ namespace UnityExtensions
             public bool array;
             public bool indented;
             public TextAsset textAsset;
-            public UnityType type;
+            public UnityType unityType;
         }
 
         public Data[] data;

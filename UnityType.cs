@@ -11,8 +11,30 @@ namespace UnityExtensions
 #pragma warning restore 0414
         [SerializeField] private bool dirty;
         private Type _type;
-        public Type Type => _type ??= string.IsNullOrEmpty(typeName) ? null : Type.GetType(typeName);
-#if UNITY_EDITOR
+
+        public string Guid
+        {
+            get => guid;
+            set => guid = value;
+        }
+
+        public Type Type => _type;// ??= string.IsNullOrEmpty(typeName) ? null : Type.GetType(typeName);
+
+        public string TypeName
+        {
+            get => typeName;
+            set
+            {
+                typeName = value;
+                _type = Type.GetType(value);
+            }
+        }
+
+        public static implicit operator Type(UnityType type)
+        {
+            return type.Type;
+        }
+
         public void OnBeforeSerialize()
         {
             if (!dirty) return;
@@ -23,6 +45,5 @@ namespace UnityExtensions
         {
             _type = Type.GetType(typeName);
         }
-#endif
     }
 }

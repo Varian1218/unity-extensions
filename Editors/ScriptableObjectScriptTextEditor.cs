@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEditorInternal;
@@ -13,16 +14,14 @@ namespace UnityExtensions.Editors
     public class ScriptableObjectScriptTextEditor : Editor
     {
         private SerializedProperty _dataProperty;
+        private DrawObject[] _objects;
         private ReorderableList _reorderableList;
         private ScriptableObjectScriptText _target;
 
         private void OnEnable()
         {
             _target = target as ScriptableObjectScriptText ?? throw new NullReferenceException(nameof(target));
-            // _data = _target.data?.Select(it => new Data
-            // {
-            //     ScriptTextData = it
-            // }).ToArray() ?? Array.Empty<Data>();
+            _objects = _target.data?.Select(CreateObject).ToArray();
             _dataProperty = serializedObject.FindProperty("data");
             _reorderableList = new ReorderableList(serializedObject, _dataProperty);
             _reorderableList.drawElementCallback = DrawElement;
@@ -36,24 +35,54 @@ namespace UnityExtensions.Editors
             return result;
         }
 
+        private static DrawObject CreateObject(ScriptableObjectScriptText.Data data)
+        {
+            if (data.textAsset == null || data.unityType?.Type == null)
+            {
+                return null;
+            }
+
+            var type = data.array ? data.unityType.Type.MakeArrayType() : data.unityType;
+            return TypeDrawer.CreateObject(
+                data.textAsset.name,
+                JsonConvert.DeserializeObject(
+                    data.textAsset.text,
+                    type
+                ),
+                type
+            );
+        }
+
         private void DrawElement(Rect rect, int index, bool isActive, bool isFocused)
         {
-            var property = _dataProperty.GetArrayElementAtIndex(index);
-            EditorGUILayout.PropertyField(_dataProperty.GetArrayElementAtIndex(index));
-            if (!property.isExpanded) return;
             var data = _target.data[index];
-            if (data.textAsset == null || data.type?.Type == null) return;
+            var property = _dataProperty.GetArrayElementAtIndex(index);
+            var type = data.array ? data.unityType.Type.MakeArrayType() : data.unityType.Type;
+            EditorGUILayout.BeginHorizontal();
+            var textAsset = EditorGUILayout.ObjectField(data.textAsset, typeof(TextAsset), false) as TextAsset;
+            if (data.textAsset != textAsset)
+            {
+                _target.data[index].textAsset = textAsset;
+                _objects[index] = CreateObject(_target.data[index]);
+            }
+
+            var unityTypeGuid = data.unityType.Guid;
+            if (UnityEditorGUILayout.TypeField(data.unityType).Guid != unityTypeGuid)
+            {
+                _objects[index] = CreateObject(_target.data[index]);
+            }
+
+            EditorGUILayout.EndHorizontal();
+            if (_objects[index] == null) return;
             try
             {
-                var type = data.array ? data.type.Type.MakeArrayType() : data.type.Type;
-                var value = JsonConvert.DeserializeObject(data.textAsset.text, type);
+                _objects[index] = TypeDrawer.DrawType(_objects[index]);
                 var text = JsonConvert.SerializeObject(
-                    DrawType(data.textAsset.name, type, value),
+                    _objects[index].Impl,
                     data.indented ? Formatting.Indented : Formatting.None
                 );
                 if (text == data.textAsset.text) return;
                 File.WriteAllText(AssetDatabase.GetAssetPath(data.textAsset), text);
-                AssetDatabase.Refresh();
             }
             catch (Exception e)
             {
@@ -61,135 +90,9 @@ namespace UnityExtensions.Editors
             }
         }
 
-        private static object DrawType(string label, Type type, object value)
-        {
-            if (type == typeof(bool)) return EditorGUILayout.Toggle(label, (bool)value);
-            if (type == typeof(float)) return EditorGUILayout.FloatField(label, (float)value);
-            if (type == typeof(int)) return EditorGUILayout.IntField(label, (int)value);
-            if (type == typeof(string))
-                return string.IsNullOrEmpty(label)
-                    ? EditorGUILayout.TextField(value as string)
-                    : EditorGUILayout.TextField(label, value as string);
-            EditorGUILayout.Foldout(true, label);
-            EditorGUI.indentLevel++;
-            if (type.IsArray)
-            {
-                value ??= Activator.CreateInstance(type, 0);
-                var array = value as Array ?? throw new NullReferenceException(label);
-                EditorGUILayout.IntField("Size", array.Length);
-                for (var i = 0; i < array.Length; i++)
-                {
-                    array.SetValue(DrawType($"{i}", type.GetElementType(), array.GetValue(i)), i);
-                }
-
-                EditorGUILayout.BeginHorizontal();
-                if (GUILayout.Button("Add"))
-                {
-                    array = CreateArray(array, array.Length + 1, type);
-                }
-
-                if (GUILayout.Button("Remove") && array.Length > 0)
-                {
-                    array = CreateArray(array, array.Length - 1, type);
-                }
-
-                EditorGUILayout.EndHorizontal();
-                EditorGUI.indentLevel--;
-                return array;
-            }
-
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
-            {
-                var genericArguments = type.GetGenericArguments();
-                var keyType = genericArguments[0];
-                if (keyType == typeof(string))
-                {
-                    var valueType = genericArguments[1];
-                    value ??= Activator.CreateInstance(type);
-                    var dictionary = value as IDictionary ?? throw new NullReferenceException();
-                    var keys = new List<object>((IEnumerable<object>)dictionary.Keys);
-                    foreach (var it in keys)
-                    {
-                        EditorGUILayout.BeginHorizontal();
-                        var key = DrawType(null, keyType, it);
-                        var val = dictionary[key];
-                        if (key != it)
-                        {
-                            dictionary.Add(key, val);
-                            dictionary.Remove(it);
-                        }
-
-                        dictionary[key] = DrawType(null, valueType, val);
-                        if (GUILayout.Button(EditorGUIUtility.IconContent("Toolbar Minus")))
-                        {
-                            dictionary.Remove(key);
-                        }
-
-                        EditorGUILayout.EndHorizontal();
-                    }
-
-                    if (GUILayout.Button("Add"))
-                    {
-                        dictionary.Add(string.Empty, default);
-                    }
-
-                    EditorGUI.indentLevel--;
-                    return dictionary;
-                }
-            }
-
-            foreach (var fieldInfo in type.GetFields())
-            {
-                var fieldType = fieldInfo.FieldType;
-                value ??= Activator.CreateInstance(type);
-                fieldInfo.SetValue(value, DrawType(fieldInfo.Name, fieldType, fieldInfo.GetValue(value)));
-            }
-
-            EditorGUI.indentLevel--;
-            return value;
-        }
-
-        // private void DrawType(string label, ref object obj)
-        // {
-        //     switch (obj)
-        //     {
-        //         case bool b:
-        //             obj = EditorGUILayout.Toggle(b, label);
-        //             break;
-        //         case float f:
-        //             obj = EditorGUILayout.FloatField(f, label);
-        //             break;
-        //         case int i:
-        //             obj = EditorGUILayout.IntField(i, label);
-        //             break;
-        //         case string s:
-        //             obj = EditorGUILayout.TextField(s, label);
-        //             break;
-        //         default:
-        //             foreach (var fieldInfo in obj.GetType().GetFields())
-        //             {
-        //                 var fo = fieldInfo.GetValue(obj);
-        //                 DrawType(fieldInfo.Name, ref fo);
-        //                 fieldInfo.SetValue(obj, fo);
-        //             }
-        //             break;
-        //     }
-        // }
-
         public override void OnInspectorGUI()
         {
             _reorderableList.DoLayoutList();
-            // for (var i = 0; i < _data.Length; i++)
-            // {
-            //     EditorGUILayout.PropertyField(_dataProperty.GetArrayElementAtIndex(i));
-            //     var data = _data[i].ScriptTextData;
-            //     if (data.textAsset == null || data.type?.Type == null) continue;
-            //     var value = JsonConvert.DeserializeObject(data.textAsset.text, data.type.Type);
-            //     var text = JsonConvert.SerializeObject(DrawType(data.textAsset.name, data.type.Type, value), Formatting.Indented);
-            //     if (text == data.textAsset.text) continue;
-            //     File.WriteAllText(AssetDatabase.GetAssetPath(data.textAsset), text);
-            //     AssetDatabase.Refresh();
-            // }
         }
     }
 }
