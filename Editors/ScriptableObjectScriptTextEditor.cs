@@ -66,7 +66,10 @@ namespace UnityExtensions.Editors
             if (type == typeof(bool)) return EditorGUILayout.Toggle(label, (bool)value);
             if (type == typeof(float)) return EditorGUILayout.FloatField(label, (float)value);
             if (type == typeof(int)) return EditorGUILayout.IntField(label, (int)value);
-            if (type == typeof(string)) return EditorGUILayout.TextField(label, value as string);
+            if (type == typeof(string))
+                return string.IsNullOrEmpty(label)
+                    ? EditorGUILayout.TextField(value as string)
+                    : EditorGUILayout.TextField(label, value as string);
             EditorGUILayout.Foldout(true, label);
             EditorGUI.indentLevel++;
             if (type.IsArray)
@@ -98,7 +101,8 @@ namespace UnityExtensions.Editors
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
             {
                 var genericArguments = type.GetGenericArguments();
-                if (genericArguments[0] == typeof(string))
+                var keyType = genericArguments[0];
+                if (keyType == typeof(string))
                 {
                     var valueType = genericArguments[1];
                     value ??= Activator.CreateInstance(type);
@@ -107,19 +111,28 @@ namespace UnityExtensions.Editors
                     foreach (var it in keys)
                     {
                         EditorGUILayout.BeginHorizontal();
-                        dictionary[it] = DrawType(it as string, valueType, dictionary[it]);
-                        if (GUILayout.Button("Remove"))
+                        var key = DrawType(null, keyType, it);
+                        var val = dictionary[key];
+                        if (key != it)
                         {
+                            dictionary.Add(key, val);
                             dictionary.Remove(it);
                         }
+
+                        dictionary[key] = DrawType(null, valueType, val);
+                        if (GUILayout.Button(EditorGUIUtility.IconContent("Toolbar Minus")))
+                        {
+                            dictionary.Remove(key);
+                        }
+
                         EditorGUILayout.EndHorizontal();
                     }
-                    EditorGUILayout.BeginHorizontal();
-                    // if (GUILayout.Button("Add"))
-                    // {
-                    //     dictionary.Add(string.Empty, default);
-                    // }
-                    EditorGUILayout.EndHorizontal();
+
+                    if (GUILayout.Button("Add"))
+                    {
+                        dictionary.Add(string.Empty, default);
+                    }
+
                     EditorGUI.indentLevel--;
                     return dictionary;
                 }
