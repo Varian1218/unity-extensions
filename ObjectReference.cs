@@ -12,6 +12,11 @@ namespace UnityExtensions
         [SerializeField] private string typeName;
         public T Value => target as T;
 
+        public static implicit operator T(ObjectReference<T> objectReference)
+        {
+            return objectReference.Value;
+        }
+
         public void OnAfterDeserialize()
         {
             typeName = GetType().AssemblyQualifiedName;
