@@ -46,7 +46,7 @@ namespace UnityExtensions.Editors
         {
             var value = fieldInfo.GetValue(obj);
             if (value != null) return value;
-            value = Activator.CreateInstance(fieldInfo.FieldType);
+            value = fieldInfo.FieldType == typeof(string) ? "" : Activator.CreateInstance(fieldInfo.FieldType);
             fieldInfo.SetValue(obj, value);
             return value;
         }
