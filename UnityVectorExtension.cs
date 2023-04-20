@@ -20,7 +20,7 @@ namespace UnityExtensions
             return new Vector3(value.X, value.Y, value.Z);
         }
 
-        public static Quaternion ToVector3(this System.Numerics.Vector4 value)
+        public static Quaternion ToQuaternion(this System.Numerics.Vector4 value)
         {
             return new Quaternion(value.X, value.Y, value.Z, value.W);
         }
