@@ -12,8 +12,8 @@ namespace UnityExtensions
     {
         [SerializeField] private UnityType type;
         [SerializeField] private Object[] values;
-
-        public Type Type => type.Type;
+        
+        public Type Type => type?.Type;
 
         public IEnumerator<Object> GetEnumerator()
         {
@@ -23,6 +23,11 @@ namespace UnityExtensions
         IEnumerator IEnumerable.GetEnumerator()
         {
             return values.GetEnumerator();
+        }
+
+        public static string GetHash(Type type)
+        {
+            return type?.FullName;
         }
 
         public void Set(IEnumerable<Object> value)

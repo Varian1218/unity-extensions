@@ -32,7 +32,7 @@ namespace UnityExtensions
 
         public static implicit operator Type(UnityType type)
         {
-            return type.Type;
+            return type?.Type;
         }
 
         public void OnBeforeSerialize()

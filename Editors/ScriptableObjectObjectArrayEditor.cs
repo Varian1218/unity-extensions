@@ -43,6 +43,7 @@ namespace UnityExtensions.Editors
 
         public override void OnInspectorGUI()
         {
+            var typeProp = serializedObject.FindProperty("type");
             if (_database == null || _database.Length == 0)
             {
                 EditorGUILayout.HelpBox("You must be create object database", MessageType.Warning);
@@ -54,23 +55,40 @@ namespace UnityExtensions.Editors
                 {
                     foreach (var database in _database)
                     {
-                        var map = database.ToDictionary(it => it.name);
-                        var contain = map.ContainsKey(_target.name);
+                        var dirty = false;
+                        var map = database.ToDictionary(it => it.objects.GetInstanceID());
+                        var contain = map.TryGetValue(_target.GetInstanceID(), out var pair);
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.ObjectField(database, typeof(ScriptableObjectObjectDatabase), false);
                         var toggle = EditorGUILayout.Toggle(contain);
-                        EditorGUILayout.EndHorizontal();
                         if (toggle)
                         {
-                            map[_target.name] = _target;
+                            var hash = string.IsNullOrEmpty(pair.hash)
+                                ? ScriptableObjectObjectArray.GetHash(_target.Type)
+                                : pair.hash;
+                            var newHash = EditorGUILayout.TextField(hash);
+                            if (!map.ContainsKey(_target.GetInstanceID()) || hash != newHash)
+                            {
+                                dirty = true;
+                                map[_target.GetInstanceID()] = new ScriptableObjectObjectDatabase.Pair
+                                {
+                                    hash = newHash,
+                                    objects = _target
+                                };
+                                database.SetValue(map.Values.OrderBy(it => it.hash));
+                            }
                         }
                         else
                         {
-                            map.Remove(_target.name);
+                            if (map.Remove(_target.GetInstanceID()))
+                            {
+                                dirty = true;
+                            }
                         }
 
-                        if (toggle == contain) continue;
-                        database.Set(map.OrderBy(it => it.Key).Select(it => it.Value));
+                        EditorGUILayout.EndHorizontal();
+                        if (!dirty) continue;
+                        database.SetValue(map.Values.OrderBy(it => it.hash));
                         EditorUtility.SetDirty(database);
                         AssetDatabase.SaveAssetIfDirty(database);
                     }
@@ -80,7 +98,8 @@ namespace UnityExtensions.Editors
             }
 
             // base.OnInspectorGUI();
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("type"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("hash"));
+            EditorGUILayout.PropertyField(typeProp);
             if (_target.Type == null) return;
             _valuesProperties.isExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(
                 _valuesProperties.isExpanded,
