@@ -61,6 +61,7 @@ namespace UnityExtensions.Editors
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.ObjectField(database, typeof(ScriptableObjectObjectDatabase), false);
                         var toggle = EditorGUILayout.Toggle(contain);
+                        EditorGUILayout.EndHorizontal();
                         if (toggle)
                         {
                             var hash = string.IsNullOrEmpty(pair.hash)
@@ -85,8 +86,6 @@ namespace UnityExtensions.Editors
                                 dirty = true;
                             }
                         }
-
-                        EditorGUILayout.EndHorizontal();
                         if (!dirty) continue;
                         database.SetValue(map.Values.OrderBy(it => it.hash));
                         EditorUtility.SetDirty(database);
