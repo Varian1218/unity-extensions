@@ -3,14 +3,11 @@
     "name": "Little Lion",
     "url": "https://github.com/little-lion-libraries"
   },
-  "dependencies": {
-    "com.little-lion.numerics": "https://github.com/littlelion-libraries/numerics.git",
-    "com.little-lion.c-sharp-extensions": "https://github.com/littlelion-libraries/c-sharp-extensions.git"
-  },
+  "dependencies": {},
   "description": "",
   "displayName": "Unity Boost",
   "keywords": [],
   "name": "com.little-lion.unity-boost",
   "unity": "2021.3",
-  "version": "3.0.0"
+  "version": "3.0.1"
 }
