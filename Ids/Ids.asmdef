@@ -1,0 +1,16 @@
+{
+    "name": "Ids",
+    "rootNamespace": "",
+    "references": [
+        "GUID:56b30b9a3b53a7d40b51b04e9e367179"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
