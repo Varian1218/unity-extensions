@@ -97,8 +97,6 @@ namespace UnityExtensions.Editors
                 EditorGUILayout.EndFoldoutHeaderGroup();
             }
 
-            // base.OnInspectorGUI();
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("hash"));
             EditorGUILayout.PropertyField(typeProp);
             if (_target.Type == null) return;
             _valuesProperties.isExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(
