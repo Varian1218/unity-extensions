@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     [CreateAssetMenu(menuName = "Unity Extensions/Graphic Raycaster", fileName = "Graphic Raycaster", order = 1)]
     public class ScriptableObjectGraphicRaycaster : ScriptableObject, IGraphicRaycaster

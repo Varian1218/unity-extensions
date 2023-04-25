@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     [CreateAssetMenu(fileName = "Sprite Dictionary", menuName = "Unity Extensions/Sprite Dictionary", order = 1)]
     public class ScriptableObjectSpriteDictionary : ScriptableObject, IDictionary<string, Sprite>

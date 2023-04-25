@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     [Serializable]
     public class UnityFunc<T> : UnityFuncBase

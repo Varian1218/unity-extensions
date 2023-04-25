@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using CSharpExtensions;
+using CSharpBoosts;
 
-namespace UnityExtensions.Editors
+namespace UnityBoosts.Editors
 {
     public class ArrayDrawObject : DrawObject
     {

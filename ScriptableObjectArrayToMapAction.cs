@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     [CreateAssetMenu(fileName = "Load Map Action", menuName = "Unity Extensions/Load Map Action", order = 1)]
     public class ScriptableObjectArrayToMapAction : ScriptableObject

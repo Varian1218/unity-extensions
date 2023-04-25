@@ -1,7 +1,7 @@
 ﻿using Numerics;
 using UnityEngine;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     public static class UnityVectorExtension
     {

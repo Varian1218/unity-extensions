@@ -1,8 +1,8 @@
 {
-    "name": "UnityExtensions",
+    "name": "DynamicObjects",
     "rootNamespace": "",
     "references": [
-        "GUID:8f8d79523ceea0b47978bd67b3cb5d1b"
+        "GUID:56b30b9a3b53a7d40b51b04e9e367179"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,8 +1,8 @@
-﻿using CSharpExtensions;
+﻿using CSharpBoosts;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityExtensions.Editors
+namespace UnityBoosts.Editors
 {
     [CustomPropertyDrawer(typeof(UnityType), true)]
     public class UnityTypePropertyDrawer : PropertyDrawer

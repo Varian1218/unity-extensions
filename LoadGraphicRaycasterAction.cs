@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     public class LoadGraphicRaycasterAction : MonoBehaviour
     {

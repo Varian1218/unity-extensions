@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEditor;
 
-namespace UnityExtensions.Editors
+namespace UnityBoosts.Editors
 {
     [CustomEditor(typeof(ScriptableObjectSpriteArray))]
     public class ScriptableObjectSpriteArrayEditor : Editor

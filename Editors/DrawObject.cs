@@ -1,6 +1,6 @@
 using System;
 
-namespace UnityExtensions.Editors
+namespace UnityBoosts.Editors
 {
     public class DrawObject
     {

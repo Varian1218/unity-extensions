@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     [CreateAssetMenu(fileName = "Object", menuName = "Unity Extensions/Object")]
     public class ScriptableObjectObject : ScriptableObject

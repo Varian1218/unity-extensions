@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     public static class UnityEventExtension
     {

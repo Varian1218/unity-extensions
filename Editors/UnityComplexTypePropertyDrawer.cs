@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using CSharpExtensions;
+using CSharpBoosts;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityExtensions.Editors
+namespace UnityBoosts.Editors
 {
     [CustomPropertyDrawer(typeof(UnityComplexType), true)]
     public class UnityComplexTypePropertyDrawer : PropertyDrawer

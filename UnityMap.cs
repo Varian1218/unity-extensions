@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     [Serializable]
     public class UnityMap<TKey, TValue> : IDictionary<TKey, TValue>, ISerializationCallbackReceiver

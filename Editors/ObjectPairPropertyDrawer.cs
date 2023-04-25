@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityExtensions.Editors
+namespace UnityBoosts.Editors
 {
     [CustomPropertyDrawer(typeof(ObjectPair<>), true)]
     public class ObjectPairPropertyDrawer : PropertyDrawer

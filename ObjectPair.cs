@@ -1,7 +1,7 @@
 using System;
 using Object = UnityEngine.Object;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     [Serializable]
     public struct ObjectPair<T> where T : Object

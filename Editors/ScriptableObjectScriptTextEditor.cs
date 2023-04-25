@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using CSharpExtensions;
+using CSharpBoosts;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace UnityExtensions.Editors
+namespace UnityBoosts.Editors
 {
     [CustomEditor(typeof(ScriptableObjectScriptText))]
     public class ScriptableObjectScriptTextEditor : Editor

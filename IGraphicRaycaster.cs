@@ -1,4 +1,4 @@
-﻿namespace UnityExtensions
+﻿namespace UnityBoosts
 {
     public interface IGraphicRaycaster
     {

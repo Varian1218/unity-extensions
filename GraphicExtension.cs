@@ -1,6 +1,6 @@
 ﻿using UnityEngine.UI;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     public static class GraphicExtension
     {

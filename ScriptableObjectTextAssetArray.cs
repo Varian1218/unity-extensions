@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     [CreateAssetMenu(fileName = "Text Asset Array", menuName = "Unity Extensions/Text Asset Array", order = 1)]
     public class ScriptableObjectTextAssetArray : ScriptableObject, IEnumerable<TextAsset>

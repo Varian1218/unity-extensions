@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     [CreateAssetMenu(fileName = "Object Array", menuName = "Unity Extensions/Object Array", order = 1)]
     public class ScriptableObjectObjectArray : ScriptableObject, IEnumerable<Object>

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace UnityExtensions.Editors
+namespace UnityBoosts.Editors
 {
     public class CustomDrawObject : DrawObject
     {

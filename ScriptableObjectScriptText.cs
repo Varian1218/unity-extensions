@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     [CreateAssetMenu(fileName = "Script Text", menuName = "Unity Extensions/Script Text", order = 1)]
     public class ScriptableObjectScriptText : ScriptableObject

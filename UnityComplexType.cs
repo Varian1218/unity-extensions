@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     [Serializable]
     public class UnityComplexType : ISerializationCallbackReceiver

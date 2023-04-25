@@ -6,7 +6,7 @@ using UnityEditorInternal;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace UnityExtensions.Editors
+namespace UnityBoosts.Editors
 {
     [CustomEditor(typeof(ScriptableObjectObjectArray))]
     public class ScriptableObjectObjectArrayEditor : Editor

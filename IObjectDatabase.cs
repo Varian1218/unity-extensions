@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     public interface IObjectDatabase
     {

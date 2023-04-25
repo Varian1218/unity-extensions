@@ -2,7 +2,7 @@
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     [Serializable]
     public class ObjectReference<T> where T : class

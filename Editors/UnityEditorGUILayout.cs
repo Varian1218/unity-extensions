@@ -1,7 +1,7 @@
-using CSharpExtensions;
+using CSharpBoosts;
 using UnityEditor;
 
-namespace UnityExtensions.Editors
+namespace UnityBoosts.Editors
 {
     public static class UnityEditorGUILayout
     {

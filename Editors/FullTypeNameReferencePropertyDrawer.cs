@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace UnityExtensions.Editors
+namespace UnityBoosts.Editors
 {
     [CustomPropertyDrawer(typeof(FullTypeNameReference), true)]
     public class FullTypeNameReferencePropertyDrawer : PropertyDrawer

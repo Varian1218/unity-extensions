@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     [CreateAssetMenu(fileName = "Sprite Map", menuName = "Unity Extensions/Sprite Map", order = 1)]
     public class ScriptableObjectSpriteMap : ScriptableObject, ISerializationCallbackReceiver

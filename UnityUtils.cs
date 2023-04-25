@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     public static class UnityUtils
     {

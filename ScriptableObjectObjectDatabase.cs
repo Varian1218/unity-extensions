@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace UnityExtensions
+namespace UnityBoosts
 {
     [CreateAssetMenu(fileName = "Object Database", menuName = "Unity Extensions/Object Database", order = 1)]
     public class ScriptableObjectObjectDatabase : ScriptableObject,
