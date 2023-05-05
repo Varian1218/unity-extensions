@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace UnityBoosts
 {
@@ -27,9 +28,19 @@ namespace UnityBoosts
                 .Select(it => it is T t ? t : throw new ArgumentException());
         }
 
+        public IEnumerable<Object> Query(string hash)
+        {
+            return _values[hash];
+        }
+
         public IEnumerable<T> Query<T>(string hash) where T : class
         {
             return _values[hash].Select(it => it as T ?? throw new NullReferenceException());
+        }
+
+        public IEnumerable<Object> Query(Type type)
+        {
+            return _values[ScriptableObjectObjectArray.GetHash(type)];
         }
 
         public void SetValue(IEnumerable<Pair> value)

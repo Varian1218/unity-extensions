@@ -8,9 +8,6 @@ namespace UnityBoosts
     {
         [SerializeField] private string guid;
         [SerializeField] private string typeName;
-#pragma warning restore 0414
-        [SerializeField] private bool dirty;
-        private Type _type;
 
         public string Guid
         {
@@ -18,7 +15,7 @@ namespace UnityBoosts
             set => guid = value;
         }
 
-        public Type Type => _type;// ??= string.IsNullOrEmpty(typeName) ? null : Type.GetType(typeName);
+        public Type Type { get; private set; }
 
         public string TypeName
         {
@@ -26,7 +23,7 @@ namespace UnityBoosts
             set
             {
                 typeName = value;
-                _type = Type.GetType(value);
+                Type = Type.GetType(value);
             }
         }
 
@@ -37,13 +34,11 @@ namespace UnityBoosts
 
         public void OnBeforeSerialize()
         {
-            if (!dirty) return;
-            dirty = false;
         }
 
         public void OnAfterDeserialize()
         {
-            _type = Type.GetType(typeName);
+            Type = Type.GetType(typeName);
         }
     }
 }

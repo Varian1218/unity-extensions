@@ -11,8 +11,8 @@ namespace UnityBoosts.Editors
         {
             EditorGUI.BeginProperty(position, label, property);
             position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
-            var dropdownAttribute = (PopupPropertyAttribute)attribute;
-            var options = dropdownAttribute.Options;
+            var popupAttribute = (PopupPropertyAttribute)attribute;
+            var options = popupAttribute.Options;
             var currentValue = property.stringValue;
             var currentIndex = Array.IndexOf(options, currentValue);
             currentIndex = EditorGUI.Popup(position, currentIndex, options);
