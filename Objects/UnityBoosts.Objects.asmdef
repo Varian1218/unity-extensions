@@ -1,0 +1,17 @@
+{
+    "name": "UnityBoosts.Objects",
+    "rootNamespace": "",
+    "references": [
+        "GUID:56b30b9a3b53a7d40b51b04e9e367179",
+        "GUID:6f2c43062e898414d8bcbdb93b73c5e0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

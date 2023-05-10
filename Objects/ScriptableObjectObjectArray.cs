@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 namespace UnityBoosts
 {
     [CreateAssetMenu(fileName = "Object Array", menuName = "Unity Extensions/Object Array", order = 1)]
-    public class ScriptableObjectObjectArray : ScriptableObject, IEnumerable<Object>
+    public class ScriptableObjectObjectArray : ScriptableObject, IObjectArray
     {
         [SerializeField] private UnityType type;
         [SerializeField] private Object[] values;
